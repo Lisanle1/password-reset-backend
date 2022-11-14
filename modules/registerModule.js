@@ -2,12 +2,12 @@ const mongo = require("../connect");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
-const CLIENT_URL ="https://63727dd379a9c60095f4d865--roaring-dragon-b10872.netlify.app"
+const CLIENT_URL ="https://roaring-dragon-b10872.netlify.app"
 exports.signup = async (req, res, next) => {
   //Email id validation
   try {
     const existUser = await mongo.selectedDb
-      .collection("users")
+      .collection("users") 
       .findOne({ email: req.body.email });
     if (existUser) {
       return res.send({
