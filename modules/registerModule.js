@@ -2,7 +2,7 @@ const mongo = require("../connect");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
-const CLIENT_URL = "http://localhost:3000";
+const CLIENT_URL =process.env.CLIENT_URL;
 exports.signup = async (req, res, next) => {
   //Email id validation
   try {
@@ -229,16 +229,3 @@ const checkPass = (newPassword, confirmPassword) => {
   return newPassword !== confirmPassword ? false : true;
 };
 
-exports.getUsers=async(req,res,next)=>{
-try{
-  const getResponse= await mongo.selectedDb.collection('users').find().toArray();
-  res.send(getResponse)
-}
-catch{
-  res.send({
-    statusCode:500,
-    msg:"Internal server error"
-  })
-}
-
-}

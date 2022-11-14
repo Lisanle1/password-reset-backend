@@ -3,7 +3,6 @@ const dotenv=require('dotenv');
 const cors=require('cors');
 const mongo = require("./connect");
 const registerRouter=require('./router/registerRouter');
-const auth=require('./middleware/auth')
 port=process.env.PORT || 3001;
 
 const app=express();
@@ -23,8 +22,7 @@ app.get('/',(req,res)=>{
 });
 
 app.use('/api',registerRouter);
-app.use("/",auth.authenticateUser)
-app.use("/users",registerRouter)
+
 
 
 app.listen(port,()=>{
