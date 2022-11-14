@@ -2,7 +2,7 @@ const mongo = require("../connect");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
-const CLIENT_URL ="https://63726436db6fb40f0c4ad18b--fabulous-raindrop-855de6.netlify.app"
+const CLIENT_URL ="https://637276392273010a156a5e02--fabulous-raindrop-855de6.netlify.app"
 exports.signup = async (req, res, next) => {
   //Email id validation
   try {
