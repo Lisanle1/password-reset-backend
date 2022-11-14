@@ -12,7 +12,7 @@ mongo.connect();
 
 //--------------------------------------------------------------------------
 
-app.use(cors());
+app.use(cors({origin:"*",credentials:true}));
 app.use(express.json());
 
 //--------------------------------------------------------------------------
@@ -22,7 +22,6 @@ app.get('/',(req,res)=>{
 });
 
 app.use('/api',registerRouter);
-
 
 
 app.listen(port,()=>{
