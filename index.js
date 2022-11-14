@@ -24,7 +24,6 @@ app.get('/',(req,res)=>{
 app.use('/api',registerRouter);
 
 
-
 app.listen(port,()=>{
     console.log(`server is listening on the port: ${port}`);
 })
