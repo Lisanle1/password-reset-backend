@@ -2,7 +2,7 @@ const mongo = require("../connect");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
-const CLIENT_URL ="https://spiffy-pegasus-24fc7c.netlify.app
+const CLIENT_URL ="https://spiffy-pegasus-24fc7c.netlify.app"
 
 // |---------------------------------------------------------Sign up--------------------------------------------------------------------|
 exports.signup = async (req, res, next) => {
