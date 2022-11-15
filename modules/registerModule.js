@@ -2,7 +2,9 @@ const mongo = require("../connect");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
-const CLIENT_URL ="https://spiffy-pegasus-24fc7c.netlify.app"
+const CLIENT_URL ="https://spiffy-pegasus-24fc7c.netlify.app
+
+// |---------------------------------------------------------Sign up--------------------------------------------------------------------|
 exports.signup = async (req, res, next) => {
   //Email id validation
   try {
@@ -29,7 +31,8 @@ exports.signup = async (req, res, next) => {
     } else {
       delete req.body.confirmPassword;
     }
-    // password Hashing and also return promise
+    
+    // password Hashing
     const ramdomString = await bcrypt.genSalt(10);
     hashedPassword = await bcrypt.hash(req.body.password, ramdomString);
 
@@ -55,8 +58,10 @@ const checkPassword = (password, confirmPassword) => {
   return password !== confirmPassword ? false : true;
 };
 
+// |---------------------------------------------------------Login-------------------------------------------------------------------|
 exports.signin = async (req, res, next) => {
   try {
+    //Email id validation
     const existUser = await mongo.selectedDb
       .collection("users")
       .findOne({ email: req.body.email });
@@ -67,7 +72,7 @@ exports.signin = async (req, res, next) => {
       });
     }
 
-    //password: Incorrect password
+    // to check whether password is incorrect or not
     const isSamePassword = await bcrypt.compare(
       req.body.password,
       existUser.password
@@ -78,7 +83,8 @@ exports.signin = async (req, res, next) => {
         msg: "Incorrect Password",
       });
     }
-    // Generate and send token as a response and token is an encrypted form of existing user
+    
+    // Generate and send the token as a response and token is an encrypted form of existing user
     const token = jwt.sign(existUser, process.env.SECRET_KEY, {
       expiresIn: "1hr",
     });
@@ -91,8 +97,10 @@ exports.signin = async (req, res, next) => {
   }
 };
 
+//|---------------------------------------------------------Forgot Password--------------------------------------------------------------------|
 exports.forgotPassword = async (req, res, next) => {
-  try {
+  try { 
+    //email id validation
     const existUser = await mongo.selectedDb
       .collection("users")
       .findOne({ email: req.body.email });
@@ -102,6 +110,7 @@ exports.forgotPassword = async (req, res, next) => {
         msg: "User with this email I'd doesn't exists.",
       });
     }
+    
     //create token
     const token = jwt.sign(
       { _id: existUser._id },
@@ -158,15 +167,15 @@ exports.forgotPassword = async (req, res, next) => {
   }
 };
 
+// |---------------------------------------------------------Reset Password--------------------------------------------------------------------|
 exports.resetPassword = async (req, res, next) => {
-    
       const token = req.params.id;
     //decrypt the token
      jwt.verify(token, process.env.RESET_PASSWORD_KEY,async (err, decodedData) => {
     if (err) {
       return res.send({
         statusCode: 400,
-        msg: "Invalid token",
+        msg: "Invalid or Expired Token",
       });
     }
 
@@ -175,9 +184,10 @@ exports.resetPassword = async (req, res, next) => {
     if (!existUser) {
       return res.send({
         statusCode: 400,
-        msg: "Link is expired",
+        msg: "Link has expired",
       });
     }
+       
     // to check newPassword and confirmPassword are matches or not.
     const isSamePassword = checkPass(
       req.body.newPassword,
